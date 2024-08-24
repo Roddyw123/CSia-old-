@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Create Informational Page</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+            {{ form.page_title.label(class="form-label") }}
+            {{ form.page_title(class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ form.page_content.label(class="form-label") }}
+            {{ form.page_content(class="form-control", id="page-content-editor") }}
+        </div>
+        <div class="mb-3">
+            {{ form.topic.label(class="form-label") }}
+            {{ form.topic(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('page-content-editor'); // Correct the field name
+</script>
+{% endblock %}

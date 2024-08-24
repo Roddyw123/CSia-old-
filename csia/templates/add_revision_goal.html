@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Add Revision Goal</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.revision_goal.label }}
+            {{ form.revision_goal(class="form-control") }}
+            {% if form.revision_goal.errors %}
+                <div class="alert alert-danger">
+                    {{ form.revision_goal.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Add Goal</button>
+    </form>
+</div>
+{% endblock %}

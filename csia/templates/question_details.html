@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">{{ question.slug }}</h1>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Content</h5>
+            <p class="card-text">{{ question.content | safe }}</p>
+        </div>
+    </div>
+
+    <!-- Add a button to toggle the mark scheme -->
+    <button id="toggleMarkScheme" class="btn btn-primary">Toggle Mark Scheme</button>
+
+    <div class="card mb-3" id="markSchemeCard">
+        <div class="card-body">
+            <h5 class="card-title">Mark Scheme</h5>
+            <p class="card-text">{{ question.mark_scheme | safe }}</p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Details</h5>
+                    <p class="card-text">Marks: {{ question.marks }}</p>
+                    <p class="card-text">Difficulty: {{ question.difficulty_rating }}</p>
+                    <p class="card-text">Paper: {{ question.paper }}</p>
+                    <p class="card-text">Topic: {{ question.topic }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Teacher's Notes</h5>
+                    <p class="card-text">{{ question.teachers_notes | safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #markSchemeCard {
+        display: none;
+    }
+</style>
+
+<script>
+    document.getElementById('toggleMarkScheme').addEventListener('click', function () {
+        var markSchemeCard = document.getElementById('markSchemeCard');
+        if (markSchemeCard.style.display === 'none' || markSchemeCard.style.display === '') {
+            markSchemeCard.style.display = 'block';
+        } else {
+            markSchemeCard.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

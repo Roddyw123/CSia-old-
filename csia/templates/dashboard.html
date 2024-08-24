@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Dashboard</h2>
+    <!-- Display inspirational quote if available -->
+    {% if quote %}
+        <p class="quote">{{ quote }}</p>
+    {% endif %}
+    {% if user.account_type == 'Student' %}
+        <h3>Today's Revision Goal</h3>
+        {% if today_goal %}
+            <p>{{ today_goal.revision_goal }}</p>
+            <form action="{{ url_for('mark_goal_complete', goal_id=today_goal.rev_id) }}" method="post">
+                <button type="submit" class="btn btn-success">Mark as Complete</button>
+            </form>
+        {% else %}
+            <p>No goal set for today or goal already completed.</p>
+            <!-- Add Goal Button -->
+            <a href="{{ url_for('add_revision_goal') }}" class="btn btn-primary">Add Goal</a>
+        {% endif %}
+        <h3>Performance Graph</h3>
+        <img src="{{ url_for('performance_graph', student_id=user.id) }}" alt="Performance Graph">
+    {% endif %}
+    <!-- Check if the user is an admin and students list is not empty -->
+    {% if user and user.account_type == 'Admin' and students %}
+        <h3>Your Students:</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.username }}</td>
+                    <td>{{ student.email }}</td>
+                    <td>
+                        <!-- Update link -->
+                        <a href="{{ url_for('update_student', student_id=student.id) }}" class="btn btn-primary btn-sm">Update</a>
+                        <!-- Delete form -->
+                        <form action="{{ url_for('delete_student', student_id=student.id) }}" method="post" style="display: inline;">
+                            <input type="submit" value="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">
+                        </form>
+                        <a href="{{ url_for('view_quizzes', student_id=student.id) }}">View Quizzes</a>
+                        <a href="{{ url_for('student_performance', student_id=student.id) }}" class="btn btn-info btn-sm">View Performance</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Welcome to your dashboard.</p>
+    {% endif %}
+</div>
+{% endblock %}

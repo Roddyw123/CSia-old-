@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Edit Question</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.slug.label(class="form-label") }}
+            {{ form.slug(class="form-control") }}
+            {% if form.slug.errors %}
+                <div class="invalid-feedback">
+                    {{ form.slug.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.marks.label(class="form-label") }}
+            {{ form.marks(class="form-control") }}
+            {% if form.marks.errors %}
+                <div class="invalid-feedback">
+                    {{ form.marks.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.content.label(class="form-label") }}
+            {{ form.content(class="form-control", id="content-editor") }}
+            {% if form.content.errors %}
+                <div class="invalid-feedback">
+                    {{ form.content.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.difficulty_rating.label(class="form-label") }}
+            {{ form.difficulty_rating(class="form-control") }}
+            <button type="button" id="generate-difficulty" class="btn btn-info btn-sm">Generate Difficulty</button>
+            {% if form.difficulty_rating.errors %}
+                <div class="invalid-feedback">
+                    {{ form.difficulty_rating.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.mark_scheme.label }}
+            {{ form.mark_scheme(rows=5, class_='form-control') }}
+            {% if form.mark_scheme.errors %}
+                <div class="invalid-feedback">
+                    {{ form.mark_scheme.errors[0] }}
+                </div>
+            {% endif %}
+        </div>
+        
+
+        <div class="mb-3">
+            {{ form.paper.label(class="form-label") }}
+            {{ form.paper(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.topic.label(class="form-label") }}
+            {{ form.topic(class="form-control") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.teachers_notes.label(class="form-label") }}
+            {{ form.teachers_notes(class="form-control") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Question</button>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('content');
+    CKEDITOR.replace('mark_scheme');
+    CKEDITOR.replace('teachers_notes');
+
+    document.getElementById('generate-difficulty').addEventListener('click', function() {
+        CKEDITOR.instances.teachers_notes.updateElement();
+        var notes = CKEDITOR.instances.teachers_notes.getData();
+
+        fetch("{{ url_for('calculate_difficulty', _external=True) }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({notes: notes})
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('difficulty_rating').value = data.difficulty_rating.toFixed(2);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Quizzes for {{ student.username }}</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Quiz ID</th>
+                <th>Filename</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for quiz in quizzes %}
+            <tr>
+                <td>{{ quiz.id }}</td>
+                <td>{{ quiz.filename }}</td>
+                <td>
+                    <a href="{{ url_for('download_quiz', quiz_id=quiz.id) }}" class="btn btn-primary btn-sm">Download</a>
+                </td>
+                <td>
+                    <form action="{{ url_for('view_quizzes', student_id=student.id) }}" method="post">
+                        {{ grade_forms[quiz.id].hidden_tag() }}
+                        {{ grade_forms[quiz.id].grade(class="form-control") }}
+                        <button type="submit" name="{{ quiz.id }}" class="btn btn-primary btn-sm">Submit Grade</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

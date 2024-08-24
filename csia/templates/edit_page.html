@@ -1,0 +1,60 @@
+{% extends 'base.html'%}
+    {% block content %}
+    <div class="container mt-4">
+        <h1>Edit Informational Page</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+    
+            <div class="mb-3">
+                {{ form.page_title.label(class="form-label") }}
+                {% if form.page_title.errors %}
+                    {{ form.page_title(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.page_title.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.page_title(class="form-control") }}
+                {% endif %}
+            </div>
+    
+            <div class="mb-3">
+                {{ form.page_content.label(class="form-label") }}
+                {% if form.page_content.errors %}
+                    {{ form.page_content(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.page_content.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.page_content(class="form-control", id="page-content-editor") }}
+                {% endif %}
+            </div>
+    
+            <div class="mb-3">
+                {{ form.topic.label(class="form-label") }}
+                {% if form.topic.errors %}
+                    {{ form.topic(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.topic.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.topic(class="form-control") }}
+                {% endif %}
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Update Page</button>
+        </form>
+    </div>
+    {% endblock %}
+    {% block scripts %}
+    {{ super() }}
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('page-content-editor'); // Correct the field name
+    </script>
+    {% endblock %}

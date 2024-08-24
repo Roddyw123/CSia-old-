@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Information Pages</h1>
+    {% for page in pages %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ page.page_title }}</h5>
+                <!-- Display the topic -->
+                <p class="card-subtitle mb-2 text-muted">Topic: {{ page.topic }}</p>
+                <p class="card-text">{{ page.page_content | safe | truncate(150) }}</p>
+                <a href="{{ url_for('information_page', page_id=page.page_id) }}" class="btn btn-primary">Read More</a>
+
+                {% if user and user.account_type == 'Admin' %}
+                    <a href="{{ url_for('edit_page', page_id=page.page_id) }}" class="btn btn-secondary">Edit</a>
+                    <form action="{{ url_for('delete_page', page_id=page.page_id) }}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p>No information pages available.</p>
+    {% endfor %}
+</div>
+{% endblock %}

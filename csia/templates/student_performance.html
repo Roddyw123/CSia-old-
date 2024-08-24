@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Student Performance Graph</h2>
+    <div class="graph-container">
+        <!-- Display the graph image -->
+        {% if graph_url %}
+            <img src="{{ graph_url }}" alt="Student Performance Graph">
+        {% else %}
+            <p>No performance data available.</p>
+        {% endif %}
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}

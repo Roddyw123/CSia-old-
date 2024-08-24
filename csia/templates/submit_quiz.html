@@ -1,0 +1,14 @@
+<!-- submit_quiz.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Submit Quiz</h2>
+    <form action="{{ url_for('submit_quiz') }}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file">Upload Quiz PDF:</label>
+            <input type="file" name="file" id="file" class="form-control" accept=".pdf">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

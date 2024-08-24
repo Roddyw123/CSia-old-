@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Generate Quiz</h2>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form action="{{ url_for('generate_quiz') }}" method="post" class="mb-4">
+                <div class="form-group mb-3">
+                    <label for="topic">Select Topic:</label>
+                    <select name="topic" id="topic" class="form-control">
+                        <div class="form-group">
+                            <label for="topic">Select Topic:</label>
+                            <select name="topic" id="topic" class="form-control">
+                                <option value="1">Topic 1</option>
+                                <option value="2">Topic 2</option>
+                                <option value="3">Topic 3</option>
+                                <option value="4">Topic 4</option>
+                                <option value="5">Topic 5</option>
+                                <option value="6">Topic 6</option>
+                                <option value="7">Topic 7</option>
+                                <option value="A">Topic A</option>
+                                <option value="B">Topic B</option>
+                                <option value="C">Topic C</option>
+                                <option value="D">Topic D</option>
+                            </select>
+                        </div>
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="num_questions">Number of Questions:</label>
+                    <input type="number" id="num_questions" name="num_questions" min="1" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Generate Quiz</button>
+            </form>
+            <form action="{{ url_for('generate_quiz') }}" method="post" enctype="multipart/form-data" class="mb-4">
+                <div class="form-group mb-3">
+                    <label for="file">Upload Quiz:</label>
+                    <input type="file" name="file" id="file" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-secondary w-100">Submit Quiz</button>
+            </form>
+        </div>
+    </div>
+    <div id="timer" class="text-center font-weight-bold mt-4">
+        Time Remaining: <span id="time"></span> seconds
+    </div>
+</div>
+{% endblock %}
